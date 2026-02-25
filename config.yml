@@ -1,10 +1,13 @@
 # GalaxyRTP - Paper (hub + backend) config
-# On each server set this-server-name to the Velocity server name (hub, eu, or usa).
+# hub-server-name and server-names MUST match velocity.toml server names.
+# On each server set this-server-name to the Velocity server name for that host (hub, eu, or usa).
 
 this-server-name: hub
 hub-server-name: hub
+# Optional: if Velocity uses a different name for hub (e.g. spawn), set it here
+# velocity-hub-name: spawn
 
-# Server names used in plugin messages (must match Velocity server names)
+# Server names used in plugin messages and connect validation (must match Velocity)
 server-names:
   - hub
   - eu

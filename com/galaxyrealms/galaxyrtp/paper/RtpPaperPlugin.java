@@ -30,11 +30,13 @@ extends JavaPlugin {
     private PaperConfig paperConfig;
     private CooldownManager cooldownManager;
     private RtpRadiusResolver radiusResolver;
+    private ServerConnectHelper serverConnectHelper;
 
     public void onEnable() {
         this.paperConfig = new PaperConfig(this);
         this.cooldownManager = new CooldownManager(this);
         this.radiusResolver = new RtpRadiusResolver(this);
+        this.serverConnectHelper = new ServerConnectHelper(this);
         this.getServer().getMessenger().registerOutgoingPluginChannel((Plugin)this, "BungeeCord");
         this.getServer().getMessenger().registerOutgoingPluginChannel((Plugin)this, "galaxyrtp:main");
         this.getServer().getMessenger().registerIncomingPluginChannel((Plugin)this, "galaxyrtp:main", (PluginMessageListener)new RtpMessageListener(this));
@@ -65,6 +67,10 @@ extends JavaPlugin {
 
     public RtpRadiusResolver getRadiusResolver() {
         return this.radiusResolver;
+    }
+
+    public ServerConnectHelper getServerConnectHelper() {
+        return this.serverConnectHelper;
     }
 }
 

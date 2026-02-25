@@ -40,8 +40,8 @@ implements PluginMessageListener {
                 Bukkit.getScheduler().runTask((Plugin)this.plugin, () -> PendingRtpListener.consumePendingAndRtp(this.plugin, p));
             }
         }
-        catch (Exception exception) {
-            // empty catch block
+        catch (Exception e) {
+            this.plugin.getLogger().warning("RtpMessageListener: invalid plugin message - " + e.getMessage());
         }
     }
 }

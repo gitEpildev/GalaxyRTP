@@ -12,21 +12,16 @@
 package com.galaxyrealms.galaxyrtp.paper;
 
 import com.galaxyrealms.galaxyrtp.common.MessageProtocol;
-import com.galaxyrealms.galaxyrtp.paper.MessageHelper;
-import com.galaxyrealms.galaxyrtp.paper.RtpPaperPlugin;
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
+
 import java.io.IOException;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
-public final class RtpConnectCommand
-implements CommandExecutor {
-    private static final String BUNGEE_CHANNEL = "BungeeCord";
+public final class RtpConnectCommand implements CommandExecutor {
     private final RtpPaperPlugin plugin;
 
     public RtpConnectCommand(RtpPaperPlugin plugin) {
@@ -66,20 +61,13 @@ implements CommandExecutor {
         }
         try {
             byte[] payload = MessageProtocol.encodeConnectRequest(serverName, worldName);
-            target.sendPluginMessage((Plugin)this.plugin, "galaxyrtp:main", payload);
-        }
-        catch (IOException e) {
+            target.sendPluginMessage(this.plugin, "galaxyrtp:main", payload);
+        } catch (IOException e) {
             this.plugin.getLogger().warning("RtpConnect: " + e.getMessage());
+            return true;
         }
-        try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            DataOutputStream out = new DataOutputStream(baos);
-            out.writeUTF("Connect");
-            out.writeUTF(serverName);
-            target.sendPluginMessage((Plugin)this.plugin, BUNGEE_CHANNEL, baos.toByteArray());
-        }
-        catch (IOException e) {
-            this.plugin.getLogger().warning("RtpConnect BungeeCord: " + e.getMessage());
+        if (!this.plugin.getServerConnectHelper().connectToServer(target, serverName)) {
+            this.plugin.getLogger().warning("RtpConnect: failed to connect " + target.getName() + " to " + serverName);
         }
         return true;
     }

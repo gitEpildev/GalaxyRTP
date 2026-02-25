@@ -21,6 +21,7 @@ public final class PaperConfig {
     private FileConfiguration config;
     private String thisServerName;
     private String hubServerName;
+    private String velocityHubName; // optional: Velocity server name for hub (defaults to hub-server-name)
     private List<String> serverNames;
     private SpawnConfig spawn;
     private List<WorldEntry> worlds;
@@ -41,6 +42,10 @@ public final class PaperConfig {
         this.config = this.plugin.getConfig();
         this.thisServerName = this.config.getString("this-server-name", "hub");
         this.hubServerName = this.config.getString("hub-server-name", "hub");
+        this.velocityHubName = this.config.getString("velocity-hub-name", this.hubServerName);
+        if (this.velocityHubName == null || this.velocityHubName.isEmpty()) {
+            this.velocityHubName = this.hubServerName;
+        }
         this.serverNames = this.config.getStringList("server-names");
         if (this.serverNames == null) {
             this.serverNames = List.of("hub", "eu", "usa");
@@ -181,6 +186,32 @@ public final class PaperConfig {
             return name;
         }
         return this.getWorldNameByKey(worldKey);
+    }
+
+    /** Returns true if serverName is a valid BungeeCord/Velocity connect target (hub or in server-names). */
+    public boolean isValidConnectTarget(String serverName) {
+        if (serverName == null || serverName.isEmpty()) {
+            return false;
+        }
+        if (this.hubServerName != null && this.hubServerName.equalsIgnoreCase(serverName)) {
+            return true;
+        }
+        if (this.velocityHubName != null && this.velocityHubName.equalsIgnoreCase(serverName)) {
+            return true;
+        }
+        if (this.serverNames != null) {
+            for (String s : this.serverNames) {
+                if (s.equalsIgnoreCase(serverName)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /** Returns the Velocity server name to use when connecting to hub (velocity-hub-name or hub-server-name). */
+    public String getConnectNameForHub() {
+        return this.velocityHubName != null ? this.velocityHubName : this.hubServerName;
     }
 
     public boolean isRtpServer(String serverName) {

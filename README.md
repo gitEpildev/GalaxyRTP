@@ -7,7 +7,7 @@ Cross-platform RTP (Random Teleport) and spawn plugin for Velocity + Paper (hub 
 
 ## How it sends players to /rtp
 
-1. **On hub** (Velocity spawn): `/rtp` opens the region menu (`rtp_region_menu` via DeluxeMenus).
+1. **On hub, EU, or USA**: `/rtp` opens the region menu (`rtp_region_menu` via DeluxeMenus). No hub-only restriction.
 2. **Region choice**: Player clicks USA or EU → DeluxeMenus runs `[connect] usa` or `[connect] eu` (BungeeCord/Velocity connect).
 3. **Cross-server RTP**: When connecting from hub to a backend, DeluxeMenus uses `/rtpconnect <player> <server> <world_key>`. That command:
    - Sends plugin message `galaxyrtp:main` with `(serverName, worldName)` via `MessageProtocol.encodeConnectRequest()`.
@@ -22,7 +22,7 @@ See [docs/RTP_FLOW.md](docs/RTP_FLOW.md) for the full flow and integration with 
 
 | Command      | Description                                                 | Permission   |
 |-------------|-------------------------------------------------------------|--------------|
-| `/rtp`      | Open RTP region menu (hub only)                             | `rtp.use`    |
+| `/rtp`      | Open RTP region menu (all servers)                          | `rtp.use`    |
 | `/rtpmenu`  | Open RTP region menu                                        | `rtp.use`    |
 | `/rtpconnect <player> <server> <world_key>` | Connect player to server + RTP in world | `rtp.use`    |
 | `/forcertp [player] <world_name>` | RTP player into a world on this server      | `rtp.use`    |

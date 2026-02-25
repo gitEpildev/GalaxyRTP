@@ -30,19 +30,15 @@ implements CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage((Component)Component.text((String)"Only players can use /rtp."));
+            sender.sendMessage((Component) Component.text("Only players can use /rtp."));
             return true;
         }
-        Player player = (Player)sender;
+        Player player = (Player) sender;
         if (!player.hasPermission("rtp.use")) {
             player.sendMessage(MessageHelper.format("rtp-no-permission", this.plugin));
             return true;
         }
-        if (!this.plugin.getPaperConfig().isHub()) {
-            player.sendMessage(MessageHelper.format("rtp-not-on-hub", this.plugin));
-            return true;
-        }
-        Bukkit.dispatchCommand((CommandSender)Bukkit.getConsoleSender(), (String)("dm open rtp_region_menu " + player.getName()));
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "dm open rtp_region_menu " + player.getName());
         return true;
     }
 }

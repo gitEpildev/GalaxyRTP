@@ -1,0 +1,21 @@
+name: GalaxyRealmsAPI
+version: 1.0.0
+main: com.galaxyrealms.api.GalaxyRealmsAPI
+api-version: 1.21
+author: GalaxyRealms
+description: Custom API endpoint for website integration to grant ranks and items
+depend: [LuckPerms, Vault]
+softdepend: [PlaceholderAPI, PhoenixCrates, FancyNpcs, EconomyShopGUI]
+commands:
+  verifylink:
+    description: Link your Discord account using a verification code
+    usage: /verifylink <code>
+    aliases: [linkdiscord, discordlink]
+  checkkeys:
+    description: Show a player's crate key counts (physical + virtual) - what the scoreboard uses
+    usage: /checkkeys [player]
+    aliases: [keyscheck, cratekeys]
+  refreshkeys:
+    description: Force scoreboard to refresh key count (e.g. after receiving a physical key)
+    usage: /galaxyrealms refreshkeys [player]
+    aliases: [refreshscoreboard]

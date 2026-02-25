@@ -2,4 +2,8 @@
 *.jar
 target/
 .idea/
+.vscode/
 *.iml
+.env
+.env.local
+API_CREDENTIALS.txt

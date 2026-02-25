@@ -1,70 +1,135 @@
-# GalaxyRTP - Paper (hub + backend) config
-# On each server set this-server-name to the Velocity server name (hub, eu, or usa).
+# GalaxyRealms API Configuration
+# This plugin provides HTTP endpoints for your custom website to grant ranks and items
 
-this-server-name: hub
-hub-server-name: hub
+# Multi-region: %galaxyrealms_region% and scoreboard line ("EU · 45ms" / "USA · 45ms"). On EU server (87) set to "EU".
+region: "EU"
 
-# Server names used in plugin messages (must match Velocity server names)
-server-names:
-  - hub
-  - eu
-  - usa
+# Set true on the spawn server (66) so /spawn teleports to world spawn instead of connecting to another server.
+spawn-is-this-server: false
 
-# Spawn location (only used when this server is the hub)
-spawn:
-  world: world
-  x: 0.5
-  y: 64.0
-  z: 0.5
-  yaw: 0
-  pitch: 0
+# Scoreboard region line: "EU · 45ms" or "USA · 45ms". Behind Velocity, backend getPing() is proxy-backend latency (wrong). region-only: true so backends show just "USA" / "EU" / "Spawn".
+scoreboard:
+  show-ping: true
+  # When true, show only region ("USA" / "EU" / "Spawn") — no ping. Use on Velocity backends so we don't show misleading proxy-backend latency.
+  region-only: true
+  proxy-message: "Connected to Small Loss & Thinker"
 
-# Worlds available for RTP (key = used in rtpconnect; world-name = Bukkit world name)
-worlds:
-  - key: overworld
-    world-name: world
-    display-name: "&aOverworld"
-  - key: nether
-    world-name: world_nether
-    display-name: "&cNether"
-  - key: end
-    world-name: world_the_end
-    display-name: "&eThe End"
+# API Server Settings
+api:
+  # The port the API server will listen on
+  port: 8080
+  
+  # The host/interface to bind to (0.0.0.0 for all interfaces, 127.0.0.1 for localhost only)
+  host: 0.0.0.0
+  
+  # Secret key for authentication (CHANGE THIS TO A RANDOM STRING!)
+  secret-key: "02636bcff176903299f9aa81dd75f99baf11afd31f28847b7a"
+  
+  # Enable/disable the API server
+  enabled: true
+  
+  # Base URL path (will be accessible at http://your-server:port/api/)
+  base-path: "/api"
 
-# Per-server default radius and group overrides (group name -> radius)
-servers:
-  eu:
-    default-radius: 2000
-    group-radius-overrides:
-      default: 1000
-      vip: 5000
-  usa:
-    default-radius: 2000
-    group-radius-overrides:
-      default: 1000
-      vip: 5000
+# Security Settings
+security:
+  # Require authentication token in requests
+  require-auth: true
+  
+  # Allowed IP addresses (leave empty to allow all, or specify IPs)
+  allowed-ips: []
+  
+  # Rate limiting (requests per minute per IP)
+  rate-limit:
+    enabled: true
+    max-requests: 60
 
-# Cooldown in seconds
-cooldown:
-  default-seconds: 60
-  fast-cooldown-seconds: 15
+# Rank Settings
+ranks:
+  # Available ranks that can be granted (must match LuckPerms group names)
+  # Order: staff first, then donator, paid ranks, discordsupporter. Must match LuckPerms group-weight.
+  available:
+    - "owner"
+    - "headdev"
+    - "admin"
+    - "mod"
+    - "helper"
+    - "builder"
+    - "donator"
+    - "nova"
+    - "celestial"
+    - "cosmic"
+    - "stellar"
+    - "astronaut"
+    - "discordsupporter"
+  
+  # Default rank if none specified
+  default: "default"
+  
+  # Whether to check if player is online before granting rank
+  require-online: true
+  
+  # Whether to remove old ranks when granting a new one
+  remove-old-ranks: false
 
-# Safe RTP
-rtp:
-  max-attempts: 50
+# Item Settings
+items:
+  # Whether to grant items when purchasing
+  enabled: true
+  
+  # Default kit/items to give (can be configured per purchase)
+  default-kit: ""
 
-# MiniMessage-formatted messages
-messages:
-  rtp-no-permission: "<red>You don't have permission to use RTP."
-  rtp-cooldown: "<yellow>RTP cooldown. Try again in {time}."
-  rtp-success: "<green>Teleported to a random location!"
-  rtp-failed: "<red>Could not find a safe location. Try again later."
-  rtp-not-on-hub: "<red>Use /rtp on the hub server."
-  spawn-success: "<green>Teleported to spawn."
-  spawn-connecting: "<green>Sending you to spawn..."
-  spawn-no-permission: "<red>You don't have permission to use /spawn."
-  rtpconnect-usage: "<red>Usage: /rtpconnect <player> <server> <world_key>"
-  rtpconnect-invalid-server: "<red>Invalid server."
-  rtpconnect-invalid-world: "<red>Invalid world."
-  rtpconnect-player-offline: "<red>Player not found or offline."
-  rtpconnect-cooldown: "<red>That player is on RTP cooldown."
+# AxVaults Store (for website vault purchase page)
+# When a player buys vault storage, your website calls grant-vault with vault number.
+# Only vault numbers between min and max (inclusive) can be granted.
+vaults:
+  min: 5
+  max: 25
+  # Permission format: axvaults.vault.<number>
+  # AxVaults permission-mode 0: each vault needs separate permission (vault 7 = axvaults.vault.7 only)
+  # permission-mode 1: highest gives all previous (axvaults.vault.10 = vaults 1-10)
+
+# PhoenixCrates Store (for website crate key purchase page)
+# When a player buys crate keys, your website calls grant-crate-key with key identifier.
+# Only keys listed here can be granted. Use PhoenixCrates key identifiers (see keys/*.yml).
+crates:
+  # Key identifiers that can be granted (must match PhoenixCrates keys/ identifier)
+  keys:
+    - Op
+    - Cosmic
+    - Galaxy
+    - Nebula
+    - Supernove
+    - Vote_Crate
+  require-online: true
+  # PhoenixCrates command (giveKey <identifier> <player> [amount])
+  command: phoenixcrates
+
+# Backend API Settings (for Discord link verification and Top Supporters)
+backend:
+  # URL to the store backend API
+  url: "http://host.docker.internal:3002/api/v1"
+  # API key for plugin-authenticated endpoints (e.g. top-supporters). Must match store MINECRAFT_API_KEY.
+  api-key: "fa08c60d5bcd63f692f574bd630a04ac14e77dcf71ea2386a0ff93645d1c3dfd"
+
+# Shared stats (kills/deaths) in MySQL – same DB as LuckPerms/Lands so spawn, USA, EU show same values.
+# apply-shared-db.sh patches host/port/database/username/password from .env.shared-db.
+shared-stats:
+  enabled: true
+  host: mysql
+  port: 3306
+  database: minecraft
+  username: minecraft
+  password: GalaxySharedDB2025
+
+# Logging
+logging:
+  # Log all API requests
+  log-requests: true
+  
+  # Log successful grants
+  log-success: true
+  
+  # Log failed attempts
+  log-failures: true

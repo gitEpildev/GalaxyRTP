@@ -1,0 +1,70 @@
+# GalaxyRTP - Paper (hub + backend) config
+# On each server set this-server-name to the Velocity server name (hub, eu, or usa).
+
+this-server-name: hub
+hub-server-name: hub
+
+# Server names used in plugin messages (must match Velocity server names)
+server-names:
+  - hub
+  - eu
+  - usa
+
+# Spawn location (only used when this server is the hub)
+spawn:
+  world: world
+  x: 0.5
+  y: 64.0
+  z: 0.5
+  yaw: 0
+  pitch: 0
+
+# Worlds available for RTP (key = used in rtpconnect; world-name = Bukkit world name)
+worlds:
+  - key: overworld
+    world-name: world
+    display-name: "&aOverworld"
+  - key: nether
+    world-name: world_nether
+    display-name: "&cNether"
+  - key: end
+    world-name: world_the_end
+    display-name: "&eThe End"
+
+# Per-server default radius and group overrides (group name -> radius)
+servers:
+  eu:
+    default-radius: 2000
+    group-radius-overrides:
+      default: 1000
+      vip: 5000
+  usa:
+    default-radius: 2000
+    group-radius-overrides:
+      default: 1000
+      vip: 5000
+
+# Cooldown in seconds
+cooldown:
+  default-seconds: 60
+  fast-cooldown-seconds: 15
+
+# Safe RTP
+rtp:
+  max-attempts: 50
+
+# MiniMessage-formatted messages
+messages:
+  rtp-no-permission: "<red>You don't have permission to use RTP."
+  rtp-cooldown: "<yellow>RTP cooldown. Try again in {time}."
+  rtp-success: "<green>Teleported to a random location!"
+  rtp-failed: "<red>Could not find a safe location. Try again later."
+  rtp-not-on-hub: "<red>Use /rtp on the hub server."
+  spawn-success: "<green>Teleported to spawn."
+  spawn-connecting: "<green>Sending you to spawn..."
+  spawn-no-permission: "<red>You don't have permission to use /spawn."
+  rtpconnect-usage: "<red>Usage: /rtpconnect <player> <server> <world_key>"
+  rtpconnect-invalid-server: "<red>Invalid server."
+  rtpconnect-invalid-world: "<red>Invalid world."
+  rtpconnect-player-offline: "<red>Player not found or offline."
+  rtpconnect-cooldown: "<red>That player is on RTP cooldown."

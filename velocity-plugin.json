@@ -1,0 +1,8 @@
+{
+  "id": "galaxyrtp",
+  "name": "GalaxyRTP",
+  "version": "1.0.0",
+  "description": "Cross-platform RTP and spawn for Velocity + Paper (hub/eu/usa).",
+  "authors": ["GalaxyRealms"],
+  "main": "com.galaxyrealms.galaxyrtp.velocity.RtpVelocityPlugin"
+}

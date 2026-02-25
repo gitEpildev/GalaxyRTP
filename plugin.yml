@@ -1,0 +1,42 @@
+name: GalaxyRTP
+version: 1.0.0
+main: com.galaxyrealms.galaxyrtp.paper.RtpPaperPlugin
+api-version: "1.21"
+author: GalaxyRealms
+description: Cross-platform RTP and spawn for Velocity + Paper (hub/eu/usa).
+
+commands:
+  rtp:
+    description: Open RTP region menu (hub only)
+    usage: /rtp
+    permission: rtp.use
+  rtpmenu:
+    description: Open RTP region menu
+    usage: /rtpmenu
+    permission: rtp.use
+  rtpconnect:
+    description: Internal - connect player to server and RTP in world (used by DeluxeMenus)
+    usage: /rtpconnect <player> <server> <world_key>
+    permission: rtp.use
+  forcertp:
+    description: RTP a player into a world on this server (used by DeluxeMenus Overworld/Nether/End clicks)
+    usage: /forcertp <player> <world_name>
+    permission: rtp.use
+  spawn:
+    description: Teleport to hub spawn or connect to hub
+    usage: /spawn
+    permission: spawn.use
+
+permissions:
+  rtp.use:
+    description: Use /rtp and RTP menus
+    default: true
+  rtp.bypasscooldown:
+    description: Bypass RTP cooldown
+    default: op
+  rtp.fastcooldown:
+    description: Use shorter RTP cooldown
+    default: false
+  spawn.use:
+    description: Use /spawn
+    default: true
